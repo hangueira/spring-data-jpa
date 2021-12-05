@@ -166,6 +166,7 @@ class MemberRepositoryTest {
         assertThat(page.getNumber()).isEqualTo(0);
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
+        assertThat(page.hasNext()).isTrue();
 
 
     }
