@@ -10,6 +10,7 @@ import study.springjpa.dto.MemberDto;
 import study.springjpa.entity.Member;
 import study.springjpa.entity.Team;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -125,6 +126,20 @@ class MemberRepositoryTest {
         assertThat(result.size()).isEqualTo(2);
         for (MemberDto memberDto : result) {
             System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    public void findbynames() {
+        Member m1 = new Member("aaa", 10);
+        Member m2 = new Member("bbb", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> result = memberRepository.findByNames(Arrays.asList("aaa", "bbb"));
+        assertThat(result.size()).isEqualTo(2);
+        for (Member member : result) {
+            System.out.println("member = " + member);
         }
     }
 }
