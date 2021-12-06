@@ -13,6 +13,8 @@ import study.springjpa.dto.MemberDto;
 import study.springjpa.entity.Member;
 import study.springjpa.entity.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +29,9 @@ class MemberRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     TeamRepository teamRepository;
+    @PersistenceContext
+    EntityManager em;
+
 
     @Test
     public void testMember() {
@@ -167,7 +172,25 @@ class MemberRepositoryTest {
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
         assertThat(page.hasNext()).isTrue();
+    }
 
+    @Test
+    public void bulkUpdate() {
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
 
+        int resultCount = memberRepository.bulkAgePlus(20);
+        // 벌크 연산을 한 후에는 flush, clear 처리를 해줘야 한다.
+        //em.flush();
+        //em.clear();
+
+        List<Member> result = memberRepository.findUser("member5", 41);
+        Member member5 = result.get(0);
+        System.out.println("member5 = " + member5);
+
+        assertThat(resultCount).isEqualTo(3);
     }
 }
